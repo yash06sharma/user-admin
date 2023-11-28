@@ -36,13 +36,18 @@ Route::get('/user-reg', [HomeController::class, 'getuserregister']);
 
 
 
-Route::get('/admin-dashboard', function () {
-     $value = session('email');
-     if($value != null){
-        return view('welcomeAdmin');
-     }else{
-        return redirect()->route('loginadmin');
-     }
-});
+// Route::get('/admin-dashboard', function () {
+//      $value = session('email');
+//      if($value != null){
+//         return view('welcomeAdmin');
+//      }else{
+//         return redirect()->route('loginadmin');
+//      }
+// });
+
+Route::get('/admin-dashboard', [HomeController::class, 'index']);
+Route::get('/admin-dashboard/user', [HomeController::class, 'create']);
+Route::get('/admin-dashboard/edituser', [HomeController::class, 'store']);
+
 
 Route::get('/useractive/{id}', [HomeController::class, 'userActive']);

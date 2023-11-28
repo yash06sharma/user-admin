@@ -21,6 +21,7 @@ class HomeController extends Controller
      */
     public function getAdminLogin()
     {
+        session()->forget('email');
         return view('logInAdmin');
     }
 
@@ -36,7 +37,14 @@ class HomeController extends Controller
         $email = $request->input('email');
         $password = $request->input('password');
 
-        return view('logInAdmin');
+        $user = DB::table('user_data')->where('type', 'admin')->first();
+        if($user->email == $email && $user->password == $password){
+
+            session(['email' => $email]);
+            return redirect('/admin-dashboard');
+        }else{
+            return view('logInAdmin');
+        }
 
     }
 
@@ -159,7 +167,12 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        //
+        $value = session('email');
+        if($value != null){
+           return view('welcomeAdmin');
+        }else{
+           return redirect()->route('loginadmin');
+        }
     }
 
     /**
@@ -167,9 +180,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-       //
+       return view('dashuser');
     }
 
     /**
@@ -180,7 +193,7 @@ class HomeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return view('dashedit');
     }
 
     /**
