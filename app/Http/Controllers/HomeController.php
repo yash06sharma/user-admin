@@ -51,19 +51,18 @@ class HomeController extends Controller
 
     //-----------_Admin Login End----------
 
-    public function getadminregister()
-    {
-        return view('registration');
-    }
-    public function postadmiregister(HomeRequest $request)
-    {
-        $name = $request->input('name');
-        $email = $request->input('email');
-        $password = $request->input('password');
+    // public function getadminregister()
+    // {
+    //     return view('registration');
+    // }
+    // public function postadmiregister(HomeRequest $request)
+    // {
+    //     $name = $request->input('name');
+    //     $email = $request->input('email');
+    //     $password = $request->input('password');
 
-
-        return view('registration');
-    }
+    //     return view('registration');
+    // }
 
 
     //---------------userLogin Strart-------
@@ -182,7 +181,13 @@ class HomeController extends Controller
      */
     public function create(Request $request)
     {
-       return view('dashuser');
+        // $users = DB::table('preusers_data')->get();
+
+        $user = DB::table('preusers_data')
+            ->select('id','name', 'email', 'status')
+            ->get();
+       return view('dashuser',['user'=>$user]);
+
     }
 
     /**
@@ -191,9 +196,11 @@ class HomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id)
     {
-        return view('dashedit');
+        $user = DB::table('preusers_data')->where('id', $id)->first();
+        // dd($user);
+        return view('dashedit',['user'=>$user]);
     }
 
     /**
@@ -215,7 +222,21 @@ class HomeController extends Controller
      */
     public function edit($id)
     {
-        //
+
+        // dd($id);
+
+        if(DB::table('preusers_data')->where('id', $id)->exists()){
+            $user = DB::table('preusers_data')->where('id', $id)->first();
+            if($user->status == 'active'){
+                DB::table('preusers_data')->where('id', $id)->delete();
+                DB::table('user_data')->where('id', $id)->delete();
+            }else{
+                DB::table('preusers_data')->where('id', $id)->delete();
+            }
+        }else{
+            dd("Soryy Dost");
+        }
+        return redirect('/admin-dashboard/user');
     }
 
     /**

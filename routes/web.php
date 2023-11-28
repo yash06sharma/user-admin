@@ -13,8 +13,8 @@ use App\Http\Controllers\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/admin-reg', [HomeController::class, 'getadminregister']);
-Route::post('/admin-reg', [HomeController::class, 'postadmiregister'])->name('register');
+// Route::get('/admin-reg', [HomeController::class, 'getadminregister']);
+// Route::post('/admin-reg', [HomeController::class, 'postadmiregister'])->name('register');
 
 Route::get('/admin', [HomeController::class, 'getAdminLogin'])->name('loginadmin');
 Route::post('/admin', [HomeController::class, 'postAdminLogin'])->name('admin');
@@ -47,7 +47,10 @@ Route::get('/user-reg', [HomeController::class, 'getuserregister']);
 
 Route::get('/admin-dashboard', [HomeController::class, 'index']);
 Route::get('/admin-dashboard/user', [HomeController::class, 'create']);
-Route::get('/admin-dashboard/edituser', [HomeController::class, 'store']);
+Route::get('/admin-dashboard/edituser/{id}', [HomeController::class, 'store']);
+Route::post('/admin-dashboard/edituser/{id}', [HomeController::class, 'show']);
+
+Route::get('/admin-dashboard/delete/{id}', [HomeController::class, 'edit']);
 
 
 Route::get('/useractive/{id}', [HomeController::class, 'userActive']);
