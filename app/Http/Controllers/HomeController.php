@@ -6,6 +6,7 @@ use App\Http\Requests\HomeRequest;
 use App\Model\preusersData;
 use App\Model\userData;
 use App\Notifications\activeMail;
+use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
@@ -43,7 +44,9 @@ class HomeController extends Controller
             session(['email' => $email]);
             return redirect('/admin-dashboard');
         }else{
+             Session::flash('message', 'Invalid Credentials!');
             return view('logInAdmin');
+
         }
 
     }
@@ -86,9 +89,10 @@ class HomeController extends Controller
     public function postuserLogin(HomeRequest $request)
     {
 
-        $student = DB::table('user_data')
-        ->where('email', $request->email)
-        ->get();
+        // $student = DB::table('user_data')
+        // ->where('email', $request->email)
+        // ->get();
+        $student = DB::table('user_data')->where('type', 'user')->first();
         // dd($student);
         if($student){
                 if($student->email == $request->email && $student->password == $request->password){
@@ -97,6 +101,7 @@ class HomeController extends Controller
                 }
 
         }
+        Session::flash('message', 'Invalid Credentials!');
         return view('loginUser');
     }
 
@@ -118,7 +123,7 @@ class HomeController extends Controller
         $preUser->password = $password;
         $preUser->status = 'pending';
         $preUser->save();
-
+        Session::flash('message', 'You have successful login !!');
         return view('registration');
     }
 
@@ -170,7 +175,9 @@ class HomeController extends Controller
         if($value != null){
            return view('welcomeAdmin');
         }else{
-           return redirect()->route('loginadmin');
+           return redirect()->route('loginadmin')->with('message', 'Credential Required!');
+        //    Redirect::to('/admin')->with('message', 'Thanks for registering!'); //is this actually OK?
+
         }
     }
 
@@ -205,13 +212,12 @@ class HomeController extends Controller
 
     /**
      * Display the specified resource.
-     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+       //
     }
 
     /**
@@ -222,9 +228,6 @@ class HomeController extends Controller
      */
     public function edit($id)
     {
-
-        // dd($id);
-
         if(DB::table('preusers_data')->where('id', $id)->exists()){
             $user = DB::table('preusers_data')->where('id', $id)->first();
             if($user->status == 'active'){
@@ -248,7 +251,14 @@ class HomeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $updata = preusersData::find($id);
+        $updata->name = $request->name;
+        $updata->email = $request->email;
+        $updata->password = $request->password;
+        $updata->status = $request->status;
+        $updata->save();
+
+        dd("Successsfull");
     }
 
     /**

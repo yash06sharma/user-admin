@@ -50,7 +50,8 @@
                   @enderror
                                 </div>
                               </div>
-                              <button type="submit" class="btn btn-secondary">Register</button>
+                              <button type="submit" class="btn btn-secondary">Register</button>&nbsp;&nbsp;
+                              <a href="{{ url('/') }}">Login an Account?</a>
                         </form>
                     </div>
                 </div>
@@ -59,7 +60,11 @@
             </div>
         </div>
     </div>
-
+    @if (session('message'))
+    <div class="alert alert-success" role="alert">
+        {{ session('message') }}
+    </div>
+@endif
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>

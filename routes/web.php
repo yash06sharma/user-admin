@@ -47,8 +47,10 @@ Route::get('/user-reg', [HomeController::class, 'getuserregister']);
 
 Route::get('/admin-dashboard', [HomeController::class, 'index']);
 Route::get('/admin-dashboard/user', [HomeController::class, 'create']);
+
 Route::get('/admin-dashboard/edituser/{id}', [HomeController::class, 'store']);
-Route::post('/admin-dashboard/edituser/{id}', [HomeController::class, 'show']);
+
+Route::post('/admin-dashboard/edituser/{id}', [HomeController::class, 'update']);
 
 Route::get('/admin-dashboard/delete/{id}', [HomeController::class, 'edit']);
 

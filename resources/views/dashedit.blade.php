@@ -13,7 +13,6 @@
     <div class="col-sm-12">
         <form action="" method="POST">
             @csrf
-            @method('PUT')
             <div class="mb-3 row">
                 <label for="name" class="col-sm-2 col-form-label">Name</label>
                 <div class="col-sm-10">
@@ -35,14 +34,10 @@
               <div class="mb-3 row">
                 <label for="status" class="col-sm-2 col-form-label">Status</label>
                 <div class="col-sm-10">
-                    <select class="form-select" aria-label="Default select example">
+                    <select class="form-select" aria-label="Default select example" name="status">
                         <option if {{ ( $user->status == 'pending' ) ? 'selected' : ''}} value="pending">Pending</option>
                         <option {{ ( $user->status == 'active' ) ? 'selected' : ''}} value="active">Active</option>
                       </select>
-
-
-
-                  {{-- <input type="text" class="form-control" id="status" name="status" value="{{$user->status}}"> --}}
                 </div>
               </div>
               <button type="submit" class="btn btn-primary">Update</button>
