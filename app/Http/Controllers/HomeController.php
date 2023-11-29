@@ -114,7 +114,6 @@ class HomeController extends Controller
     {
         if($id){
             $student = userData::where('id', $id)->exists();
-
             if(!$student){
                 if(DB::table('preusers_data')->where('id', $id)->exists()){
                   preusersData::where('id', $id)
@@ -133,7 +132,10 @@ class HomeController extends Controller
 
                        return view('activateUser',['email'=>$user->email]);
 
+                }else{
+                    dd("Do not try to insert wrong Id");
                 }
+
         }else{
             dd("You are already registered");
         }
@@ -171,12 +173,23 @@ class HomeController extends Controller
      */
     public function create(Request $request)
     {
-        // $users = DB::table('preusers_data')->get();
+        $value = session('email');
+        if($value != null){
 
         $user = DB::table('preusers_data')
-            ->select('id','name', 'email', 'status')
-            ->get();
-       return view('dashuser',['user'=>$user]);
+        ->select('id','name', 'email', 'status')
+        ->get();
+   return view('dashuser',['user'=>$user]);
+        }else{
+           return redirect()->route('loginadmin')->with('message', 'Credential Required!');
+        //    Redirect::to('/admin')->with('message', 'Thanks for registering!'); //is this actually OK?
+
+        }
+
+    //     $user = DB::table('preusers_data')
+    //         ->select('id','name', 'email', 'status')
+    //         ->get();
+    //    return view('dashuser',['user'=>$user]);
 
     }
 
@@ -188,8 +201,18 @@ class HomeController extends Controller
      */
     public function store($id)
     {
-        $user = DB::table('preusers_data')->where('id', $id)->first();
-        return view('dashedit',['user'=>$user]);
+        $value = session('email');
+        if($value != null && $id){
+            if(DB::table('preusers_data')->where('id', $id)->exists()){
+                $user = DB::table('preusers_data')->where('id', $id)->first();
+                return view('dashedit',['user'=>$user]);
+            }else{
+                return redirect('/admin-dashboard/user');
+            }
+        }else{
+            return redirect()->route('loginadmin')->with('message', 'Credential Required!');
+        }
+
     }
 
     /**
