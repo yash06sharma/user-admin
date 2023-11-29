@@ -51,25 +51,6 @@ class HomeController extends Controller
 
     }
 
-
-    //-----------_Admin Login End----------
-
-    // public function getadminregister()
-    // {
-    //     return view('registration');
-    // }
-    // public function postadmiregister(HomeRequest $request)
-    // {
-    //     $name = $request->input('name');
-    //     $email = $request->input('email');
-    //     $password = $request->input('password');
-
-    //     return view('registration');
-    // }
-
-
-    //---------------userLogin Strart-------
-
         /**
      * Store a newly created resource in storage.
      *
@@ -78,6 +59,7 @@ class HomeController extends Controller
 
     public function getuserLogin()
     {
+        session()->forget('user');
         return view('loginUser');
     }
         /**
@@ -97,7 +79,8 @@ class HomeController extends Controller
         if($student){
                 if($student->email == $request->email && $student->password == $request->password){
 
-                    dd("Wellcomme");
+                    session(['user' => $request->email]);
+                    return redirect('/user-dashboard');
                 }
 
         }
@@ -206,18 +189,26 @@ class HomeController extends Controller
     public function store($id)
     {
         $user = DB::table('preusers_data')->where('id', $id)->first();
-        // dd($user);
         return view('dashedit',['user'=>$user]);
     }
 
     /**
      * Display the specified resource.
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show(Request $request)
     {
-       //
+        $value = session('user');
+        if($value != null){
+            $user = DB::table('user_data')
+            ->select('id','name', 'email', 'status')
+            ->get();
+           return view('userdashboard',['user'=>$user]);
+        }else{
+            return redirect('/')->with('message', 'Credential Required!');
+        }
+
+
     }
 
     /**
@@ -258,7 +249,32 @@ class HomeController extends Controller
         $updata->status = $request->status;
         $updata->save();
 
-        dd("Successsfull");
+
+        $user = DB::table('preusers_data')->where('id', $id)->first();
+        if($user->status == 'pending'){
+            // dd($user->status);
+            if(DB::table('user_data')->where('id', $id)->exists()){
+                DB::table('user_data')->where('id', $id)->delete();
+
+            }
+
+        }else if($user->status == 'active'){
+            // dd($user->status);
+            if(DB::table('user_data')->where('id', $id)->exists()){
+                dd("the Record Is Exist");
+            }
+            else{
+                $insert = new userData;
+                $insert->id = $id;
+                $insert->name = $request->name;
+                $insert->email = $request->email;
+                $insert->password = $request->password;
+                $insert->type = 'user';
+                $insert->status = $request->status;
+                $insert->save();
+            }
+        }
+        return redirect('/admin-dashboard/user');
     }
 
     /**

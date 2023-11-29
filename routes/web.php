@@ -56,3 +56,6 @@ Route::get('/admin-dashboard/delete/{id}', [HomeController::class, 'edit']);
 
 
 Route::get('/useractive/{id}', [HomeController::class, 'userActive']);
+
+Route::get('/user-dashboard', [HomeController::class, 'show']);
+// Route::get('/user-dashboard/userList', [HomeController::class, 'userList']);
