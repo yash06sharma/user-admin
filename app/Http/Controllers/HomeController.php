@@ -38,7 +38,6 @@ class HomeController extends Controller
     {
         $email = $request->input('email');
         $password = $request->input('password');
-
         $user = DB::table('user_data')->where('type', 'admin')->first();
         if($user->email == $email && $user->password == $password){
 
@@ -47,9 +46,7 @@ class HomeController extends Controller
         }else{
              Session::flash('message', 'Invalid Credentials!');
             return view('logInAdmin');
-
         }
-
     }
 
         /**
