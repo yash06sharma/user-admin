@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('userLayout')
 @section('title') UserDashboard
 @endsection
 

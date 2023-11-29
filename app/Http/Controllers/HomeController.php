@@ -10,6 +10,7 @@ use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -70,19 +71,16 @@ class HomeController extends Controller
      */
     public function postuserLogin(HomeRequest $request)
     {
-
-        // $student = DB::table('user_data')
-        // ->where('email', $request->email)
-        // ->get();
-        $student = DB::table('user_data')->where('type', 'user')->first();
-        // dd($student);
-        if($student){
-                if($student->email == $request->email && $student->password == $request->password){
-
+        // $password =  Hash::make($request->input('password'));
+        if(DB::table('user_data')->where('email', $request->email)->exists()){
+            $student = DB::table('user_data')->where('email', $request->email)->first();
+                if($student->email == $request->email &&
+                Hash::check($request->input('password'), $student->password))
+                // Hash::check($student->password == $request->password))
+                {
                     session(['user' => $request->email]);
                     return redirect('/user-dashboard');
                 }
-
         }
         Session::flash('message', 'Invalid Credentials!');
         return view('loginUser');
@@ -97,8 +95,11 @@ class HomeController extends Controller
     {
         $name = $request->input('name');
         $email = $request->input('email');
-        $password = $request->input('password');
-        // dd($name,$email,$password);
+        // $password = $request->input('password');
+        $password =  Hash::make($request->input('password'));
+        // $data = bcrypt($request->input('password'));
+
+        // dd($data);
 
         $preUser = new preusersData;
         $preUser->name = $name;
@@ -135,20 +136,13 @@ class HomeController extends Controller
                 }else{
                     dd("Do not try to insert wrong Id");
                 }
-
         }else{
             dd("You are already registered");
         }
-
         }else{
-
             dd('Wrong Path');
         }
-
     }
-
-
-
     /**
      * Display a listing of the resource.
      *
@@ -161,8 +155,6 @@ class HomeController extends Controller
            return view('welcomeAdmin');
         }else{
            return redirect()->route('loginadmin')->with('message', 'Credential Required!');
-        //    Redirect::to('/admin')->with('message', 'Thanks for registering!'); //is this actually OK?
-
         }
     }
 
@@ -182,14 +174,7 @@ class HomeController extends Controller
    return view('dashuser',['user'=>$user]);
         }else{
            return redirect()->route('loginadmin')->with('message', 'Credential Required!');
-        //    Redirect::to('/admin')->with('message', 'Thanks for registering!'); //is this actually OK?
-
         }
-
-    //     $user = DB::table('preusers_data')
-    //         ->select('id','name', 'email', 'status')
-    //         ->get();
-    //    return view('dashuser',['user'=>$user]);
 
     }
 
@@ -212,9 +197,7 @@ class HomeController extends Controller
         }else{
             return redirect()->route('loginadmin')->with('message', 'Credential Required!');
         }
-
     }
-
     /**
      * Display the specified resource.
      * @return \Illuminate\Http\Response
@@ -230,8 +213,6 @@ class HomeController extends Controller
         }else{
             return redirect('/')->with('message', 'Credential Required!');
         }
-
-
     }
 
     /**
@@ -275,14 +256,12 @@ class HomeController extends Controller
 
         $user = DB::table('preusers_data')->where('id', $id)->first();
         if($user->status == 'pending'){
-            // dd($user->status);
             if(DB::table('user_data')->where('id', $id)->exists()){
                 DB::table('user_data')->where('id', $id)->delete();
 
             }
 
         }else if($user->status == 'active'){
-            // dd($user->status);
             if(DB::table('user_data')->where('id', $id)->exists()){
                 dd("the Record Is Exist");
             }
