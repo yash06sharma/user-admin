@@ -16,7 +16,7 @@ use App\Http\Controllers\DashboardController;
 */
 //-------------User Section with Login-----------------
 
-Route::get('/user-dashboard', [HomeController::class, 'show']);
+Route::get('/user-dashboard', [DashboardController::class, 'show']);
 
 Route::get('/', function () {
     session()->forget('user');
@@ -46,7 +46,7 @@ Route::prefix('admin-dashboard')->group(function () {
     Route::get('/user', [DashboardController::class, 'create']);
     Route::get('/edituser/{id}', [DashboardController::class, 'store']);
     Route::post('/edituser/{id}', [DashboardController::class, 'update']);
-    Route::get('/delete/{id}', [DashboardController::class, 'edit']);
+    Route::get('/delete/{id}', [DashboardController::class, 'destroy']);
 });
 
 

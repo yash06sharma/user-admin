@@ -40,6 +40,7 @@ class HomeController extends Controller
         $password = $request->input('password');
 
         $user = DB::table('user_data')->where('type', 'admin')->first();
+        // dd($user);
         if($user->email == $email && $user->password == $password){
 
             session(['email' => $email]);
