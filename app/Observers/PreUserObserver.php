@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\model\preusersData;
+use App\Model\preusersData;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\activeMail;

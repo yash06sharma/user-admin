@@ -13,29 +13,40 @@ use App\Http\Controllers\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-//-------------User Section-----------------
+//-------------User Section with Login-----------------
 
 Route::get('/user-dashboard', [HomeController::class, 'show']);
-Route::get('/', [HomeController::class, 'getuserLogin']);
+
+Route::get('/', function () {
+    session()->forget('user');
+        return view('login_User');
+});
+
 Route::post('/', [HomeController::class, 'postuserLogin'])->name('user');
-Route::get('/user-reg', [HomeController::class, 'getuserregister']);
+
+//-------------User Registration------------
+Route::get('/user-reg', function () {
+    return view('registration');
+});
 Route::post('/user-reg', [HomeController::class, 'postuserregister'])->name('register');
 
 
 //-------------Admin Section-----------------
 
-
-Route::get('/admin', [HomeController::class, 'getAdminLogin'])->name('loginadmin');
+Route::get('/admin', function () {
+    session()->forget('email');
+    return view('logIn_Admin');
+});
 Route::post('/admin', [HomeController::class, 'postAdminLogin'])->name('admin');
 
-Route::get('/admin-dashboard', [HomeController::class, 'index']);
-Route::get('/admin-dashboard/user', [HomeController::class, 'create']);
 
-Route::get('/admin-dashboard/edituser/{id}', [HomeController::class, 'store']);
-Route::post('/admin-dashboard/edituser/{id}', [HomeController::class, 'update']);
-
-Route::get('/admin-dashboard/delete/{id}', [HomeController::class, 'edit']);
-
+Route::prefix('admin-dashboard')->group(function () {
+    Route::get('/', [HomeController::class, 'index']);
+    Route::get('/user', [HomeController::class, 'create']);
+    Route::get('/edituser/{id}', [HomeController::class, 'store']);
+    Route::post('/edituser/{id}', [HomeController::class, 'update']);
+    Route::get('/delete/{id}', [HomeController::class, 'edit']);
+});
 
 
 //-------------Active Link By Admin-----------------

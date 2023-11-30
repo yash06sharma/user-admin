@@ -24,7 +24,7 @@ class HomeController extends Controller
     public function getAdminLogin()
     {
         session()->forget('email');
-        return view('logInAdmin');
+        return view('logIn_Admin');
     }
 
 
@@ -46,7 +46,7 @@ class HomeController extends Controller
             return redirect('/admin-dashboard');
         }else{
              Session::flash('message', 'Invalid Credentials!');
-            return view('logInAdmin');
+            return view('logIn_Admin');
 
         }
 
@@ -61,7 +61,7 @@ class HomeController extends Controller
     public function getuserLogin()
     {
         session()->forget('user');
-        return view('loginUser');
+        return view('login_User');
     }
         /**
      * Store a newly created resource in storage.
@@ -83,7 +83,7 @@ class HomeController extends Controller
                 }
         }
         Session::flash('message', 'Invalid Credentials!');
-        return view('loginUser');
+        return view('login_User');
     }
 
     public function getuserregister()
@@ -131,7 +131,7 @@ class HomeController extends Controller
                     $student->type = 'user';
                     $student->save();
 
-                       return view('activateUser',['email'=>$user->email]);
+                       return view('activate_User',['email'=>$user->email]);
 
                 }else{
                     dd("Do not try to insert wrong Id");
@@ -152,9 +152,9 @@ class HomeController extends Controller
     {
         $value = session('email');
         if($value != null){
-           return view('welcomeAdmin');
+           return view('welcome_Admin');
         }else{
-           return redirect()->route('loginadmin')->with('message', 'Credential Required!');
+           return redirect()->route('login_admin')->with('message', 'Credential Required!');
         }
     }
 
@@ -171,9 +171,9 @@ class HomeController extends Controller
         $user = DB::table('preusers_data')
         ->select('id','name', 'email', 'status')
         ->get();
-   return view('dashuser',['user'=>$user]);
+   return view('dash_user',['user'=>$user]);
         }else{
-           return redirect()->route('loginadmin')->with('message', 'Credential Required!');
+           return redirect()->route('login_admin')->with('message', 'Credential Required!');
         }
 
     }
@@ -190,12 +190,12 @@ class HomeController extends Controller
         if($value != null && $id){
             if(DB::table('preusers_data')->where('id', $id)->exists()){
                 $user = DB::table('preusers_data')->where('id', $id)->first();
-                return view('dashedit',['user'=>$user]);
+                return view('dash_edit',['user'=>$user]);
             }else{
                 return redirect('/admin-dashboard/user');
             }
         }else{
-            return redirect()->route('loginadmin')->with('message', 'Credential Required!');
+            return redirect()->route('login_admin')->with('message', 'Credential Required!');
         }
     }
     /**
@@ -209,7 +209,7 @@ class HomeController extends Controller
             $user = DB::table('user_data')
             ->select('id','name', 'email', 'status')
             ->get();
-           return view('userdashboard',['user'=>$user]);
+           return view('user_dashboard',['user'=>$user]);
         }else{
             return redirect('/')->with('message', 'Credential Required!');
         }
