@@ -21,12 +21,6 @@ class HomeController extends Controller
      * @param  \Illuminate\Http\HomeRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function getAdminLogin()
-    {
-        session()->forget('email');
-        return view('logInAdmin');
-    }
-
 
     /**
      * Store a newly created resource in storage.
@@ -40,7 +34,6 @@ class HomeController extends Controller
         $password = $request->input('password');
         $user = DB::table('user_data')->where('type', 'admin')->first();
         if($user->email == $email && $user->password == $password){
-
             session(['email' => $email]);
             return redirect('/admin-dashboard');
         }else{
@@ -54,12 +47,6 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-    public function getuserLogin()
-    {
-        session()->forget('user');
-        return view('loginUser');
-    }
         /**
      * Store a newly created resource in storage.
      *
@@ -73,7 +60,6 @@ class HomeController extends Controller
             $student = DB::table('user_data')->where('email', $request->email)->first();
                 if($student->email == $request->email &&
                 Hash::check($request->input('password'), $student->password))
-                // Hash::check($student->password == $request->password))
                 {
                     session(['user' => $request->email]);
                     return redirect('/user-dashboard');
@@ -83,20 +69,11 @@ class HomeController extends Controller
         return view('loginUser');
     }
 
-    public function getuserregister()
-    {
-        return view('registration');
-    }
-
     public function postuserregister(HomeRequest $request)
     {
         $name = $request->input('name');
         $email = $request->input('email');
-        // $password = $request->input('password');
         $password =  Hash::make($request->input('password'));
-        // $data = bcrypt($request->input('password'));
-
-        // dd($data);
 
         $preUser = new preusersData;
         $preUser->name = $name;
