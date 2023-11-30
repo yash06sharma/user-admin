@@ -2,10 +2,10 @@
 
 namespace App\Observers;
 
-use App\Model\preusersData;
+use App\Models\preusersData;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
-use App\Notifications\activeMail;
+use App\Notifications\ActiveMail;
 
 
 class PreUserObserver
@@ -13,13 +13,13 @@ class PreUserObserver
     /**
      * Handle the preusers data "created" event.
      *
-     * @param  \App\model\preusersData  $preusersData
+     * @param  \App\models\preusersData  $preusersData
      * @return void
      */
     public function created(preusersData $preusersData)
     {
         //
-        $project = [
+        $UserActive = [
             'greeting' => 'Hi Mr, Yash',
             'email' => $preusersData->email,
             'id'=> $preusersData->id,
@@ -27,7 +27,7 @@ class PreUserObserver
 
         ];
         //  dd($otpValid);
-        Notification::route('mail', '06yashsharma@gmail.com')->notify(new activeMail($project));
+        Notification::route('mail', '06yashsharma@gmail.com')->notify(new ActiveMail($UserActive));
     }
 
     /**

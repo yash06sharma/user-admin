@@ -40,12 +40,7 @@ class HomeRequest extends FormRequest
 
         return $rules;
 
-
-
     }
-
-
-
         /**
      * Get custom messages for validator errors.
      *

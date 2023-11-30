@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,11 +42,11 @@ Route::post('/admin', [HomeController::class, 'postAdminLogin'])->name('admin');
 
 
 Route::prefix('admin-dashboard')->group(function () {
-    Route::get('/', [HomeController::class, 'index']);
-    Route::get('/user', [HomeController::class, 'create']);
-    Route::get('/edituser/{id}', [HomeController::class, 'store']);
-    Route::post('/edituser/{id}', [HomeController::class, 'update']);
-    Route::get('/delete/{id}', [HomeController::class, 'edit']);
+    Route::get('/', [DashboardController::class, 'index']);
+    Route::get('/user', [DashboardController::class, 'create']);
+    Route::get('/edituser/{id}', [DashboardController::class, 'store']);
+    Route::post('/edituser/{id}', [DashboardController::class, 'update']);
+    Route::get('/delete/{id}', [DashboardController::class, 'edit']);
 });
 
 

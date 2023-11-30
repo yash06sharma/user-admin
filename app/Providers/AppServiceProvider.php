@@ -3,7 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Model\preusersData;
+// use App\Models\preusersData;
+use App\Models\preusersData;
 use App\Observers\PreUserObserver;
 
 class AppServiceProvider extends ServiceProvider
