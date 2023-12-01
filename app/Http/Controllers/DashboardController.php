@@ -34,11 +34,7 @@ class DashboardController extends Controller
     {
         $value = session('email');
         if($value != null){
-            // $user = userData::all();
-
-        $user = DB::table('preusers_data')
-        ->select('id','name', 'email', 'status')
-        ->get();
+        $user = preusersData::get(['id','name','email','status']);
    return view('dash_user',['user'=>$user]);
         }else{
            return redirect()->route('login_admin')->with('message', 'Credential Required!');
@@ -55,11 +51,10 @@ class DashboardController extends Controller
     {
         $value = session('email');
         if($value != null && $id){
-
-            if(DB::table('preusers_data')->where('id', $id)->exists()){
-                $user = DB::table('preusers_data')->where('id', $id)->first();
+               if (preusersData::where('id', '=', $id)->exists()) {
+                $user = preusersData::where('id', '=', $id)->first(['name','email','password','status']);
                 return view('dash_edit',['user'=>$user]);
-            }
+             }
             else{
                 return redirect('/admin-dashboard/user');
             }
@@ -67,11 +62,10 @@ class DashboardController extends Controller
             return redirect()->route('login_admin')->with('message', 'Credential Required!');
         }
 
-            // if (preusersData::where('id', '=', $id)->exists()) {
-            //     $user = preusersData::where('id', '=', $id)->first(['name','email','password','status']);
-            //     dd($user->email);
-            //     // return view('dash_edit',['user'=>$user]);
-            //  }
+               // if(DB::table('preusers_data')->where('id', $id)->exists()){
+            //     $user = DB::table('preusers_data')->where('id', $id)->first();
+            //     return view('dash_edit',['user'=>$user]);
+            // }
     }
 
     /**
@@ -159,7 +153,6 @@ class DashboardController extends Controller
 
             if (preusersData::where('id', '=', $id)->exists()){
             $user = preusersData::where('id', '=', $id)->first();
-            // dd($user);
             if($user->status == 'active'){
                     $res=preusersData::find($id)->delete();
                     $res=userData::find($id)->delete();

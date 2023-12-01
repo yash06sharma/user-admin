@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
-
 class preusersData extends Model
 {
+    // implements Authenticatable
     protected $fillable = [
         'name',
         'email',
@@ -14,20 +13,30 @@ class preusersData extends Model
     ];
     protected $hidden = ['password'];
      /**
-     * Get the user's first name.
+     * Get the user's name.
      *
      * @param  string  $value
      * @return string
      */
 
-    public function getNameAttribute($value)
-    {
-        return ucfirst($value['name']);
-    }
+    //  public function getAuthIdentifierName(){
 
-    // Setter for the 'name' attribute
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = strtolower($value); // Convert the name to lowercase when setting it
-    }
+    //  }
+    //  public function getAuthIdentifier(){
+
+    //  }
+    //  public function getAuthPassword(){
+
+    //  }
+    //  public function getRememberToken(){
+
+    //  }
+    //  public function setRememberToken($value){
+
+    //  }
+    //  public function getRememberTokenName(){
+
+    //  }
+
+
 }

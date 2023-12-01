@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,22 +17,48 @@ use App\Http\Controllers\DashboardController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+//-----------__Auth Section-----------------
+
+Route::get('register', 'Auth\RegisterController@getregdata')->name('register');
+Route::post('register', 'Auth\RegisterController@create');
+
+Route::get('/login', 'Auth\LoginController@getLogin')->name('login');
+Route::post('/login', 'Auth\LoginController@authenticate');
+
+Route::get('/logout', 'Auth\LoginController@logout');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //-------------User Section with Login-----------------
 
-Route::get('/user-dashboard', [DashboardController::class, 'show']);
+Route::get('/dashboard', [DashboardController::class, 'show']);
 
-Route::get('/', function () {
-    session()->forget('user');
-        return view('login_User');
-});
+// Route::get('/', function () {
+//     session()->forget('user');
+//         return view('login_User');
+// });
 
-Route::post('/', [HomeController::class, 'postuserLogin'])->name('user');
+// Route::post('/', [HomeController::class, 'postuserLogin'])->name('user');
 
 //-------------User Registration------------
-Route::get('/user-reg', function () {
-    return view('registration');
-});
-Route::post('/user-reg', [HomeController::class, 'postuserregister'])->name('register');
+// Route::get('/user-reg', function () {
+//     return view('registration');
+// });
+// Route::post('/user-reg', [HomeController::class, 'postuserregister'])->name('register');
 
 
 //-------------Admin Section-----------------
