@@ -1,16 +1,16 @@
 <?php
 
 namespace App;
+
 use Illuminate\Database\Eloquent\Model;
 // use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User  extends Authenticatable
 {
-
-   use Notifiable;
+    use Notifiable;
 
 
     protected $table = 'users';
@@ -37,8 +37,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'email_verified_at'
+        'type',
+        'status'
     ];
-
 
 }
