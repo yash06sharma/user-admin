@@ -37,4 +37,34 @@ class ConfirmPasswordController extends Controller
     {
         $this->middleware('auth');
     }
+
+//   /**
+//      * Show the confirmation form.
+//      *
+//      * @return \Illuminate\View\View
+//      */
+//     public function showConfirmationForm()
+//     {
+//         return view('auth.passwords.confirm');
+//     }
+
+//     /**
+//      * Confirm the user's password.
+//      *
+//      * @param  Request  $request
+//      * @return \Illuminate\Http\Response
+//      */
+//     public function confirm(Request $request)
+//     {
+//         $request->validate([
+//             'password' => 'required|password',
+//         ]);
+
+//         // Password confirmation successful, you can proceed with your logic here
+
+//         return redirect('/')->with('status', 'Password confirmed successfully!');
+//     }
+
+
+
 }

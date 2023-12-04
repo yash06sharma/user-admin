@@ -5,7 +5,12 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\ConfirmPasswordController;
 use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -19,6 +24,23 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//---------------Password Link-------------
+
+
+
+Route::get('/confirm-password', 'Auth\ConfirmPasswordController@showConfirmForm')->name('password.confirmation');
+Route::post('/confirm-password', 'Auth\ConfirmPasswordController@confirm');
+
+Route::group(['middleware' => ['web']], function () {
+    // ... other routes ...
+
+    // Password Reset Routes
+    Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+    Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+    Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+    Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
+});
+
 
 
 //-----------__Auth Section-----------------
