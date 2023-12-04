@@ -27,7 +27,7 @@
                             </a>
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item" href="/admin-dashboard/user">ActiveUser</a></li>
-                              <li><a class="dropdown-item" href="/admin-dashboard/edituser">EditUser</a></li>
+                              {{-- <li><a class="dropdown-item" href="/admin-dashboard/edituser">EditUser</a></li> --}}
                               <li><hr class="dropdown-divider"></li>
                               <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>

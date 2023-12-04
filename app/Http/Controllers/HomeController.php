@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\userData;
+use App\Http\Requests\HomeRequest;
+use App\Models\Preuser;
 use App\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -18,26 +21,21 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
-     if($user != null){
+     if($user){
         if($user->status == 'active' && $user->type == 'admin'){
             return redirect('/admin-dashboard');
         }else if($user->status == 'active' && $user->type == 'user'){
-
             $user = User::all();
             return view('user_dashboard',['user'=>$user]);
 
         }else if($user->status == 'pending' && $user->type == 'user'){
-            dd("User Pending");
+            // dd("User Pending");
             return redirect('/logout');
         }
     }else{
-        return redirect('/login')->with('message', 'Credential Required!');
+        return redirect('/register')->with('message', 'Credential Required!');
     }
 
-
-
-    // $user = userData::all();
-    // return view('user_dashboard',['user'=>$user]);
 
     }
 
@@ -48,7 +46,7 @@ class HomeController extends Controller
      */
     public function create()
     {
-        //
+        return view('auth.register');
     }
 
     /**
@@ -57,9 +55,18 @@ class HomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(HomeRequest $request)
     {
-        //
+        // dd($request->all());
+
+        $Preuser = new Preuser;
+        $Preuser->name = $request->name;
+        $Preuser->email = $request->email;
+        $Preuser->password = Hash::make($request->password);
+        $Preuser->status = 'pending';
+        $Preuser->save();
+        return redirect('/login')->with('message', 'successfully registered!!');
+
     }
 
     /**
@@ -72,24 +79,29 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         if($user != null){
-
-           if($user->status == 'active' && $user->type == 'admin'){
+            if($user->status == 'active' && $user->type == 'admin'){
                 if(User::where('id', '=', $id)->exists()){
-                    $update = User::find($id);
-                    // dd($update->status);
-                    if($update->status == 'pending'){
-                        $update->status = 'active';
-                        $update->save();
-                    }else{
-                        dd("Data is already active");
-                    }
-
+                    dd("You are already Active");
                 }else{
-                   dd("data doesn't exist");
-                }
-           }
 
-           } return redirect('/login');
+                    $update = Preuser::find($id);
+                    $user = new User;
+                    $user->name = $update->name;
+                    $user->email = $update->email;
+                    $user->password = $update->password;
+                    $user->status = 'active';
+                    $user->type = 'user';
+                    $user->save();
+                    // Preuser::find($id)->delete();
+                    $update->delete();
+
+                    return redirect('/admin-dashboard/user');
+                }
+
+            }
+
+           }
+            return redirect('/login');
 
     }
 

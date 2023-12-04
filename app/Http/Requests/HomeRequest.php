@@ -28,15 +28,18 @@ class HomeRequest extends FormRequest
         $rules = [
             'email' => 'required|email',
             'name' => 'required',
-            'password' => 'required'
+            'password' => 'required',
+            'password_confirmation' => 'required_with:password|same:password'
         ];
 
-        if (!$this->routeIs('admin')) {
-            unset($rules['name']);
-        }
-        if (!$this->routeIs('user')) {
-            unset($rules['name']);
-        }
+        // if (!$this->routeIs('admin')) {
+        //     unset($rules['name']);
+        //     unset($rules['confirmPassword']);
+        // }
+        // if (!$this->routeIs('user')) {
+        //     unset($rules['name']);
+        //     unset($rules['confirmPassword']);
+        // }
 
         return $rules;
 

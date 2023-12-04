@@ -23,8 +23,8 @@ use Illuminate\Support\Facades\Auth;
 
 //-----------__Auth Section-----------------
 
-Route::get('register', 'Auth\RegisterController@getregdata')->name('register');
-Route::post('register', 'Auth\RegisterController@create');
+Route::get('register', [HomeController::class, 'create'])->name('register');
+Route::post('register', [HomeController::class, 'store']);
 
 Route::get('/login', 'Auth\LoginController@getLogin')->name('login');
 Route::post('/login', 'Auth\LoginController@authenticate');
@@ -49,6 +49,10 @@ Route::prefix('admin-dashboard')->group(function () {
         Route::get('/edituser/{id}', [DashboardController::class, 'store']);
         Route::post('/edituser/{id}', [DashboardController::class, 'update']);
         Route::get('/delete/{id}', [DashboardController::class, 'destroy']);
+
+        Route::get('/editpreuser/{id}', [DashboardController::class, 'editPre']);
+        Route::post('/editpreuser/{id}', [DashboardController::class, 'updatePre']);
+        Route::get('/deleted/{id}', [DashboardController::class, 'PreDelete']);
 
 });
 

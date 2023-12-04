@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\preusersData;
+use App\Models\Preuser;
 use App\Models\userData;
 use Session;
 use App\User;
@@ -40,7 +40,8 @@ class DashboardController extends Controller
         if($user != null){
             if($user->status == 'active' && $user->type == 'admin'){
                 $user = User::get(['id','name','email','status']);
-            return view('dash_user',['user'=>$user]);
+                $preuser = Preuser::get(['id','name','email','status']);
+            return view('dash_user',['user'=>$user, 'preuser'=>$preuser]);
             }
         }else{
             return redirect('/login')->with('message', 'Credential Required!');
@@ -141,7 +142,7 @@ class DashboardController extends Controller
      */
     public function destroy($id)
     {
-
+        dd($id);
 
         $user = Auth::user();
         if($user != null && $id){
@@ -158,4 +159,108 @@ class DashboardController extends Controller
         }
 
     }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function editPre($id)
+    {
+
+        $user = Auth::user();
+        if($user != null && $id){
+            if($user->status == 'active' && $user->type == 'admin'){
+            if (Preuser::where('id', '=', $id)->exists()) {
+                $user = Preuser::where('id', '=', $id)->first(['name','email','password','status']);
+                return view('dash_edit',['user'=>$user]);
+             }else{
+                return redirect('/admin-dashboard/user');
+            }
+            }
+        }else{
+            return redirect('/login')->with('message', 'Credential Required!');
+        }
+    }
+
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePre(Request $request, $id)
+    {
+
+        $user = Auth::user();
+        if($user != null && $id){
+            if($user->status == 'active' && $user->type == 'admin'){
+            if (Preuser::where('id', '=', $id)->exists()) {
+                $update = Preuser::find($id);
+                if($request->status == 'active'){
+                    $user = new User;
+                    $user->name = $request->name;
+                    $user->email = $request->email;
+                    $user->password = $request->password;
+                    $user->status = $request->status;
+                    $user->type = 'user';
+                    $user->save();
+                    $update->delete();
+
+
+                }else{
+
+                    $update->name = $request->name;
+                    $update->email = $request->email;
+                    $update->password = $request->password;
+                    $update->status = $request->status;
+                    $update->save();
+                }
+                return redirect('/admin-dashboard/user');
+
+             }else{
+                return redirect('/admin-dashboard/user');
+            }
+            }
+        }else{
+            return redirect('/login')->with('message', 'Credential Required!');
+        }
+    }
+
+
+
+
+        /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function PreDelete($id)
+    {
+        // dd($id);
+
+        $user = Auth::user();
+        if($user != null && $id){
+            if($user->status == 'active' && $user->type == 'admin'){
+            if (Preuser::where('id', '=', $id)->exists()) {
+                $res=Preuser::find($id)->delete();
+                return redirect('/admin-dashboard/user');
+             }else{
+                return redirect('/admin-dashboard/user');
+            }
+            }
+        }else{
+            return redirect('/login')->with('message', 'Credential Required!');
+        }
+
+    }
+
+
+
 }

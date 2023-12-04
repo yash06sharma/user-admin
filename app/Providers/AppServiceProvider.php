@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 // use App\Models\preusersData;
-use App\User;
-use App\Observers\PreUserObserver;
+use App\Models\Preuser;
+use App\Observers\PreuserObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        User::observe(PreUserObserver::class);
+        Preuser::observe(PreuserObserver::class);
     }
 }

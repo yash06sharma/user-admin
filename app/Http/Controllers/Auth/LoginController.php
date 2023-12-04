@@ -60,11 +60,18 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
         // dd($credentials);
 
+
+
         if (Auth::attempt($credentials)) {
             // Authentication passed...
             return redirect('/dashboard');
             //  dd("Good Bro");
+        }else{
+            return back()->with(['msg' => 'Invalid Credential']);
         }
+
+
+
     }
 
     public function logout(Request $request) {
