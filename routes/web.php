@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 
+
 Route::get('/confirm-password', 'Auth\ConfirmPasswordController@showConfirmForm')->name('password.confirmation');
 Route::post('/confirm-password', 'Auth\ConfirmPasswordController@confirm');
 

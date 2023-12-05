@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Preuser;
 use Session;
-use App\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 class DashboardController extends Controller
 {
@@ -81,13 +81,6 @@ class DashboardController extends Controller
      */
     public function show(Request $request)
     {
-        // $value = session('user');
-        // if($value != null){
-            // }else{
-                //     return redirect('/login')->with('message', 'Credential Required!');
-                // }
-                //     $user = userData::all();
-                //    return view('user_dashboard',['user'=>$user]);
     }
 
     /**
@@ -261,5 +254,8 @@ class DashboardController extends Controller
     }
 
 
-
 }
+
+
+
+
